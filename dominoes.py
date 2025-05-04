@@ -1,4 +1,5 @@
 import random
+from game_interface import GameInterface
 
 def prepare_stock_pieces_init():
     stock_pieces_result = []
@@ -54,9 +55,17 @@ def check_who_starts(computer_list: list, user_list: list, snake: list) -> str:
     return ""
 
 
+def make_str_with_player_domino(user_list: list) -> str:
+    temp_str = ""
+    for num, value in enumerate(user_list):
+        temp_str += f"{num + 1}:{value}\n"
+
+    return temp_str
+
+
 next_status = {
-    "computer": "player",
-    "player": "computer",
+    "computer": ("player", "Status: It's your turn to make a move. Enter your command."),
+    "player": ("computer",  "Status: Computer is about to make a move. Press Enter to continue..."),
 }
 
 
@@ -75,10 +84,13 @@ while not who_begins:
 
     who_begins = check_who_starts(computer, user, domino_snake)
 
-status = next_status[who_begins]
+status = next_status[who_begins][0]
 
-print(f"Stock pieces: {stock_pieces}")
-print(f"Computer pieces: {computer}")
-print(f"Player pieces: {user}")
-print(f"Domino snake: {domino_snake}")
-print(f"Status: {status}")
+# print(f"Stock pieces: {stock_pieces}")
+# print(f"Computer pieces: {computer}")
+# print(f"Player pieces: {user}")
+# print(f"Domino snake: {domino_snake}")
+# print(f"Status: {status}")
+
+print(GameInterface(len(stock_pieces), len(computer), domino_snake, make_str_with_player_domino(user)).__str__())
+print(next_status[who_begins][1])
